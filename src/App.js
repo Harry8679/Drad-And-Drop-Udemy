@@ -7,10 +7,9 @@ export default function App() {
   return (
     <TaskProvider>
       <Router>
-        <nav className="bg-blue-600 p-4 text-white text-center">
-          <Link to="/">🏗️ Gestionnaire de Tâches</Link>
+        <nav className="bg-blue-600 p-4 text-white flex justify-between">
+          <Link to="/">🏗 Gestionnaire de Tâches</Link>
         </nav>
-
         <Routes>
           <Route path="/" element={<Dashboard />} />
         </Routes>
