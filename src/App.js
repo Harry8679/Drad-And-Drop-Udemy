@@ -1,13 +1,20 @@
-import './App.css';
+import React from "react";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { TaskProvider } from "./context/TaskContext";
+import Dashboard from "./pages/Dashboard";
 
-function App() {
+export default function App() {
   return (
-    <div className="App">
-      <h1 className="text-3xl font-bold underline">
-        Hello world!
-      </h1>
-    </div>
+    <TaskProvider>
+      <Router>
+        <nav className="bg-blue-600 p-4 text-white text-center">
+          <Link to="/">🏗️ Gestionnaire de Tâches</Link>
+        </nav>
+
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+        </Routes>
+      </Router>
+    </TaskProvider>
   );
 }
-
-export default App;
