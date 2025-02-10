@@ -12,36 +12,51 @@ export function TaskProvider({ children }) {
 
   // 🔄 Récupérer les tâches de Firestore
   const fetchTasks = async () => {
-    const querySnapshot = await getDocs(collection(db, "tasks"));
-    const tasksArray = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-    setTasks(tasksArray);
+    try {
+      const querySnapshot = await getDocs(collection(db, "tasks"));
+      const tasksArray = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      setTasks(tasksArray);
+    } catch (error) {
+      console.error("❌ Erreur de récupération des tâches :", error);
+    }
   };
 
   // ➕ Ajouter une tâche
   const addTask = async (task) => {
     if (typeof task !== "object" || !task.content) {
-      console.error("La tâche doit être un objet valide !");
+      console.error("❌ La tâche doit être un objet valide !");
       return;
     }
-  
-    const docRef = await addDoc(collection(db, "tasks"), task);
-    setTasks([...tasks, { id: docRef.id, ...task }]);
-  };    
-  // const addTask = async (task) => {
-  //   const docRef = await addDoc(collection(db, "tasks"), task);
-  //   setTasks([...tasks, { id: docRef.id, ...task }]);
-  // };
+
+    try {
+      const docRef = await addDoc(collection(db, "tasks"), task);
+      setTasks([...tasks, { id: docRef.id, ...task }]);
+      console.log("✅ Tâche ajoutée :", { id: docRef.id, ...task });
+    } catch (error) {
+      console.error("🔥 Erreur lors de l'ajout de la tâche :", error);
+    }
+  };
 
   // ❌ Supprimer une tâche
   const deleteTask = async (id) => {
-    await deleteDoc(doc(db, "tasks", id));
-    setTasks(tasks.filter((task) => task.id !== id));
+    try {
+      await deleteDoc(doc(db, "tasks", id));
+      setTasks(tasks.filter((task) => task.id !== id));
+      console.log(`🗑️ Tâche supprimée : ${id}`);
+    } catch (error) {
+      console.error("❌ Erreur de suppression :", error);
+    }
   };
 
   // ✏️ Mettre à jour une tâche
   const updateTask = async (id, updatedTask) => {
-    await updateDoc(doc(db, "tasks", id), updatedTask);
-    setTasks(tasks.map((task) => (task.id === id ? { ...task, ...updatedTask } : task)));
+    try {
+      await updateDoc(doc(db, "tasks", id), updatedTask);
+      setTasks(tasks.map((task) => (task.id === id ? { ...task, ...updatedTask } : task)));
+      console.log(`🔄 Tâche mise à jour : ${id}`, updatedTask);
+    } catch (error) {
+      console.error("❌ Erreur de mise à jour :", error);
+    }
   };
 
   return (
