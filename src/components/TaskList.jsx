@@ -10,11 +10,11 @@ const columns = {
 };
 
 export default function TaskList() {
-  const { tasks, updateTaskStatus } = useContext(TaskContext);
+  const { tasks, updateTask } = useContext(TaskContext);
 
   const onDragEnd = (result) => {
     if (!result.destination) return;
-    updateTaskStatus(result.draggableId, result.destination.droppableId);
+    updateTask(result.draggableId, { status: result.destination.droppableId });
   };
 
   return (
