@@ -19,9 +19,18 @@ export function TaskProvider({ children }) {
 
   // ➕ Ajouter une tâche
   const addTask = async (task) => {
+    if (typeof task !== "object" || !task.content) {
+      console.error("La tâche doit être un objet valide !");
+      return;
+    }
+  
     const docRef = await addDoc(collection(db, "tasks"), task);
     setTasks([...tasks, { id: docRef.id, ...task }]);
-  };
+  };    
+  // const addTask = async (task) => {
+  //   const docRef = await addDoc(collection(db, "tasks"), task);
+  //   setTasks([...tasks, { id: docRef.id, ...task }]);
+  // };
 
   // ❌ Supprimer une tâche
   const deleteTask = async (id) => {
