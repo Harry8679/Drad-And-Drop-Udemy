@@ -8,7 +8,10 @@ export default function TaskForm() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!content.trim()) return;
-    addTask(content);
+
+    // ✅ On envoie un objet bien structuré à Firebase
+    addTask({ content, status: "todo" });
+
     setContent("");
   };
 
